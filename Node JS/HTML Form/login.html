@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple HTML Form</title>
+</head>
+
+<body>
+    <strong>POSTING Form</strong>
+    <form action="/getUserName" method="POST">
+        <!--
+            action="/getUserName" : the data collected should be sent to /getUserName route
+            method="POST" : the data should be posted to the route and app.post('/getUserName') should handle it
+        -->
+        <label>Username:</label><br> <!-- Normal Textual Label for display LMAO -->
+        <input type="text" name="username" required><br> <!-- Entering Value in the box LMAO --> 
+        
+        <label>Password</label><br>
+        <input type="password" name="password" required><br>
+
+        <input type="submit" value="Login"> <!-- Submit Button LMAO -->
+        
+    </form>
+</body>
+</html>
