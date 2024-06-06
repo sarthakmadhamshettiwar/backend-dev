@@ -1,11 +1,17 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
+const session = require('express-session');
 const app = express();
 const port = 3000;
 
 
 // Middleware to parse request body
 app.use(express.urlencoded({ extended: false }));
+app.use(session({
+    secret: 'secret-key', 
+    resave: false,
+    saveUninitialized: false
+}));
 
 
 // Create and Set Connection Configuration
@@ -18,69 +24,94 @@ const db = mysql.createConnection({
 
 
 // Connect
-db.connect((err)=>{
-    if(err){
+db.connect((err) => {
+    if (err) {
         throw err;
     }
     console.log("DB Connection Successful");
 });
 
 
-// Serve the HTML file containing the login.html file which contains a form
-app.get('/', (req, res) => {
-    // res.send('')  
-       res.send('Sorry but goto /getUserName or /addNewUser');
+// Serve the signup page
+app.get('/signup', (req, res) => {
+    res.sendFile(__dirname + '/signup.html');
 });
 
-// Processing the data which was sent by any form with action="/getUserName" and method="post"
-app.post('/getUserName', (req, res)=>{
-    const {username, password} = req.body;
-    let sql = `SELECT name, password FROM users WHERE username = '${username}'`;
-    let query = db.query(sql, (err, result)=>{
-        if(err){
+
+// Process the login form data
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    let sql = `SELECT name, password FROM users WHERE username = ?`;
+    let query = db.query(sql, [username], (err, result) => {
+        if (err) {
             throw err;
         }
-        if(result.length == 0){
+        if (result.length == 0) {
             res.send('No such user found. Please re-enter the username.');
             return;
         }
         result = JSON.parse(JSON.stringify(result));
         let UserName = result[0]['name'], UserPassword = result[0]['password'];
-
-        if(UserPassword == password){
-            res.send('User Authenticated Successfully');
+        console.log(`Username: ${UserName}`);
+        console.log(`Userpassword: ${UserPassword}`);
+        if (UserPassword == password) {
+            req.session.loggedin = true;
+            req.session.cookie.maxAge = (1000 * 60 * 10); // 10 mins 
+            req.session.username = UserName;
             console.log(`${UserName} has logged in`);
-        }
-        else{
+            res.redirect('/home');
+        } else {
             res.send('Password or Username is wrong');
         }
     });
 });
 
 
-app.get('/login', (req, res)=>{
+// Serve the login page
+app.get('/login', (req, res) => {
+    // Check whether user is already logged in or not
+    if (req.session.loggedin) {
+        res.redirect('/home');
+        return;
+    }
     res.sendFile(__dirname + '/login.html');
 })
 
 
-app.get('/signup', (req, res)=>{
-    res.sendFile(__dirname + '/signup.html');
+// Serve the home page
+app.get('/home', (req, res) => {
+    if (req.session.loggedin) {
+        res.send(`Welcome to your Homepage, ${req.session.username}`);
+    } else {
+        res.send('Your session has expired. Please login again.');
+    }
 });
 
 
-app.post('/addNewUser', (req, res)=>{
-    const {name, username, password} = req.body;
-    let post = {name: name, username: username, password: password};
+// Process the signup form data
+app.post('/signup', (req, res) => {
+    const { name, username, password } = req.body;
+    let post = { name: name, username: username, password: password };
     let sql = "INSERT INTO users SET ?";
-    let query = db.query(sql, post, (err, result)=>{
-        if(err) throw err;
+    let query = db.query(sql, post, (err, result) => {
+        if (err) throw err;
         else res.send(`Account Created. Welcome ${username}`);
         console.log(`${name} created New Account`);
     });
 });
 
-app.listen(port, ()=>{
-    setTimeout(()=>{
-        console.log('Server is running at http://localhost:', port);
-    }, 1000)
+
+// Logout route
+app.get('/logout', (req, res) => {
+    let username = req.session.username;
+    req.session.destroy((err) => {
+        if (err) throw err;
+        console.log(`${username} has logged out!`);
+        res.redirect('/login');
+    });
+})
+
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });
