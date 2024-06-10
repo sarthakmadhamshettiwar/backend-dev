@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Todo List</title>
+    </head>
+
+    <body>
+        
+        <!-- <h1>First item <%=list[list.length - 1]%></h1> -->
+        <h1>Todo List for <%=currentDay%></h1>
+        <ul>
+            <!--  -->
+            <!--javascript code-->
+            <% list.forEach(element => { %>
+                <li><%=element%></li>
+            <%}); %>
+        </ul>
+        <form action="/" method="post">
+            <input type="text" name="newItem"></input>
+            <button type="submit">Add task</button>
+        </form>
+    </body>
+</html>
