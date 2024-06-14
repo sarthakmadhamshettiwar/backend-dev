@@ -13,3 +13,15 @@ console.log(token);
 // the output of the above code will be : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.4DvTG7o-6dgSnQWPwYOmPNnM6Kdmv30_WHIk2cXVc_8
 // which is same as output from 'jwt.io' if given payload and secret key is inserted on the website.
 // So token is f(header and algo) . g(payload) . h(secret key)
+
+console.log(jwt.verify(token, secret));
+console.log('------------------------------------------------------------------------------------');
+
+token = token.toLowerCase(); //modifying the token
+
+try{
+  console.log(jwt.verify(token, secret)); //this line will now give error as modified token will not match the secret
+}
+catch(error){
+  console.log(error);
+}
