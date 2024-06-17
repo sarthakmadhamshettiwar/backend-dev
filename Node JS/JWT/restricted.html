@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restricted Area</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .container {
+      text-align: center;
+      border: 2px solid #008080;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #008080;
+      margin-bottom: 20px;
+    }
+    .joke {
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #555;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 1em;
+      color: #ffffff;
+      background-color: #008080;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background-color: #005f5f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Restricted Area</h1>
+    <p>Sorry, you do not have access to this page.</p>
+    <div class="joke">
+      <script>
+        // Random joke array
+        const jokes = [
+          "Why don't scientists trust atoms? Because they make up everything!",
+          "Why did the scarecrow win an award? Because he was outstanding in his field!",
+          "Why don't skeletons fight each other? They don't have the guts.",
+          "What do you call fake spaghetti? An impasta!",
+          "Why was the math book sad? Because it had too many problems."
+        ];
+        
+        // Display a random joke
+        document.write(jokes[Math.floor(Math.random() * jokes.length)]);
+      </script>
+    </div>
+    <a class="btn" href="/">Go to Home</a>
+  </div>
+</body>
+</html>
