@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Homepage</title>
-    </head>
-    <body>
-        <h1>Welcome: <%=email%></h1>
-        <form action="/logout" method="get">
-            <input type="submit" value="Logout">
-        </form>
-    </body>
+<head>
+    <title>Homepage</title>
+</head>
+<body>
+    <h1>Welcome: <%= email %></h1>
+    <form action="/stats" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <input type="file" class="form-control-file" name="uploaded_file" accept="image/*">
+            <input type="text" class="form-control" placeholder="Number of speakers" name="nspeakers">
+            <input type="submit" value="Get me the stats!" class="btn btn-default">            
+        </div>
+    </form>
+    <form action="/logout" method="get">
+        <input type="submit" value="Logout">
+    </form>
+</body>
 </html>
