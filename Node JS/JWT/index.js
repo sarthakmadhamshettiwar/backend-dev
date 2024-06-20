@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const multer  = require('multer')
 const secret_key = 'SECRET_KEY';
-
+const path = require('path');
 const session = require('express-session');
+
 mongoose.connect("mongodb://127.0.0.1:27017/TrialDB")
     .then(()=>{
         console.log('MongoDB Connected')
@@ -38,9 +40,27 @@ app.use(session({
 
 app.use(express.urlencoded({ extended: false }));
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+const upload = multer({ 
+    storage: storage,
+    //fileFilter: fileFilter
+});
 
 app.get('/',(req, res)=>{
     res.json({'message':'Welcome'});
+});
+
+app.post('/stats', upload.single('uploaded_file'), (req, res) => {
+    console.log(req.file, req.body);
+    res.redirect('/');
 });
 
 app.get('/signin', (req, res)=>{
