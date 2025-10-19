@@ -5,4 +5,4 @@ now, testing with github-cli
 
 verifying the headers? 
 
-producing kafka messages with 
+headers contains the type of even (push, pull and client-id) as well 
