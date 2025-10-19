@@ -4,3 +4,5 @@ BTW, this readme update is just done to test github webhooks working (tested wit
 now, testing with github-cli 
 
 verifying the headers? 
+
+producing kafka messages with 
