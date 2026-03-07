@@ -1,0 +1,20 @@
+<html>
+  <body>
+    <input 
+      id="searchInput"
+      type="text"
+      oninput="getAutoCompleteSuggestionsDebounced(this.value)"
+    />
+
+    <button onclick="search()">Search</button>
+
+    <script src="script.js"></script>
+
+    <script>
+      function search() {
+        const value = document.getElementById("searchInput").value;
+        getAutoCompleteSuggestions(value);
+      }
+    </script>
+  </body>
+</html>
